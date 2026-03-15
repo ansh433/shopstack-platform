@@ -30,13 +30,7 @@ function validateRequest(req, res, next) {
     });
   }
 
-  // Additional custom email validation
-  if (req.body.email && !validateEmail(req.body.email)) {
-    return res.status(400).json({
-      error: "Validation failed",
-      details: [{ msg: "Invalid email format", param: "email" }],
-    });
-  }
+
 
   next();
 }
