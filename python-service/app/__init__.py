@@ -2,8 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+import os
 
-from flask.json import JSONEncoder
+
 
 from datetime import datetime, date
 from decimal import Decimal
@@ -12,15 +13,7 @@ db = SQLAlchemy()
 jwt = JWTManager()
 
 
-class CustomJSONEncoder(JSONEncoder):
-    """Custom JSON encoder that handles datetime and Decimal types."""
 
-    def default(self, obj):
-        if isinstance(obj, (datetime, date)):
-            return obj.isoformat()
-        if isinstance(obj, Decimal):
-            return float(obj)
-        return super().default(obj)
 
 
 def create_app(config_name=None):
@@ -30,8 +23,12 @@ def create_app(config_name=None):
     from app.config import get_config
     app.config.from_object(get_config(config_name))
 
+    # Override SQLALCHEMY_DATABASE_URI with environment variable if available
+    if os.environ.get('SQLALCHEMY_DATABASE_URI'):
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+
     # Set custom JSON encoder
-    app.json_encoder = CustomJSONEncoder
+
 
     # Initialize extensions
     db.init_app(app)
