@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models.order import Order, OrderItem
 from app.models.product import Product
+from sqlalchemy.orm import joinedload
 
 orders_bp = Blueprint("orders", __name__)
 
@@ -13,7 +14,7 @@ orders_bp = Blueprint("orders", __name__)
 def list_orders():
     user_id = get_jwt_identity()
 
-    orders = Order.query.filter_by(user_id=int(user_id)).all()
+    orders = Order.query.options(joinedload(Order.items).joinedload(OrderItem.product)).filter_by(user_id=int(user_id)).all()
 
     result = []
     for order in orders:
@@ -81,14 +82,17 @@ def create_order():
     # Calculate tax and discount
     from app.services.payment_service import calculate_tax, apply_discount
 
-    tax = calculate_tax(subtotal)
     discount_amount = 0
     discount_code = data.get("discount_code")
 
     if discount_code:
         subtotal, discount_amount = apply_discount(subtotal, discount_code)
 
-    total = subtotal + tax - discount_amount
+    # Calculate tax after applying any discounts
+    tax = calculate_tax(subtotal)
+
+    # Total is the discounted subtotal plus tax
+    total = subtotal + tax
 
     order = Order(
         user_id=int(user_id),
