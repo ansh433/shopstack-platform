@@ -12,6 +12,10 @@ router.post("/register", registerValidation, validateRequest, async (req, res) =
   try {
     const { email, password, name } = req.body;
 
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
     // Check if user exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
