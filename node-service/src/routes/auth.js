@@ -8,7 +8,7 @@ const { registerValidation, validateRequest, validateEmail } = require("../middl
 const router = express.Router();
 
 // POST /api/auth/register
-router.post("/register", registerValidation, validateRequest, async (req, res) => {
+router.post("/register", registerValidation, validateEmail, validateRequest, async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
