@@ -9,6 +9,8 @@ function validateEmail(email) {
 // Registration validation rules
 const registerValidation = [
   check("email")
+    .notEmpty()
+    .withMessage("Email is required")
     .isEmail()
     .withMessage("Invalid email format"),
   check("password")
