@@ -7,8 +7,8 @@ function formatUserResponse(user) {
     email: user.email,
     name: user.name,
     role: user.role,
-    avatar: user.profile.avatar,
-    bio: user.profile.bio,
+    avatar: user.profile?.avatar,
+    bio: user.profile?.bio,
     joinedAt: user.createdAt,
   };
 }
@@ -35,7 +35,7 @@ function paginate(page, limit) {
   const parsedPage = parseInt(page, 10) || 1;
   const parsedLimit = parseInt(limit, 10) || 10;
 
-  const offset = parsedPage * parsedLimit;
+  const offset = (parsedPage - 1) * parsedLimit;
 
   return {
     limit: parsedLimit,
