@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+import logging
+
 from app import db
 from app.models.order import Order
 from app.services.payment_service import calculate_tax, apply_discount
