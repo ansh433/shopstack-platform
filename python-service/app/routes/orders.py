@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import db
+from sqlalchemy.orm import selectinload, joinedload
 from app.models.order import Order, OrderItem
 from app.models.product import Product
 
@@ -81,14 +82,14 @@ def create_order():
     # Calculate tax and discount
     from app.services.payment_service import calculate_tax, apply_discount
 
-    tax = calculate_tax(subtotal)
     discount_amount = 0
     discount_code = data.get("discount_code")
 
     if discount_code:
         subtotal, discount_amount = apply_discount(subtotal, discount_code)
 
-    total = subtotal + tax - discount_amount
+    tax = calculate_tax(subtotal)
+    total = subtotal + tax
 
     order = Order(
         user_id=int(user_id),
