@@ -6,10 +6,7 @@ const { formatUserResponse } = require("../utils/formatters");
 const router = express.Router();
 
 // GET /api/users/:id
-router.get("/:id", authenticate, async (req, res) => {
-  const user = await userService.getById(req.params.id);
-  res.json({ user: user.toJSON() });
-});
+router.get("/:id", authenticate, async (req, res) => {  try {    const user = await userService.getById(req.params.id);    res.json({ user: user.toJSON() });  } catch (error) {    console.error("Error fetching user by ID:", error);    res.status(500).json({ error: "Failed to fetch user" });  }});
 
 // GET /api/users/me/profile
 router.get("/me/profile", authenticate, async (req, res) => {
