@@ -38,7 +38,7 @@ class ProductionConfig(BaseConfig):
         f"postgresql://"
         f"{os.environ.get('DB_USER', 'appuser')}:"
         f"{os.environ.get('DB_PASS', 'apppassword')}@"
-        f"{os.environ.get('DB_HOST', 'localhost')}:"
+        f"{os.environ.get('DB_HOST', '')}:"
         f"{os.environ.get('DB_PORT', '5432')}/"
         f"{os.environ.get('DB_NAME', 'ecommerce')}"
     )
