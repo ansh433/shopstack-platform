@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import db
+from sqlalchemy.orm import selectinload, joinedload
 from app.models.order import Order, OrderItem
 from app.models.product import Product
 
