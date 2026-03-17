@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 
 from app import db
 from app.models.product import Product
+from sqlalchemy import or_
 
 products_bp = Blueprint("products", __name__)
 
