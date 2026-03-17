@@ -1,14 +1,12 @@
 const { check, validationResult } = require("express-validator");
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-function validateEmail(email) {
-  return EMAIL_REGEX.test(email);
-}
 
 // Registration validation rules
 const registerValidation = [
   check("email")
+    .notEmpty()
+    .withMessage("Email is required")
     .isEmail()
     .withMessage("Invalid email format"),
   check("password")
@@ -30,13 +28,7 @@ function validateRequest(req, res, next) {
     });
   }
 
-  // Additional custom email validation
-  if (req.body.email && !validateEmail(req.body.email)) {
-    return res.status(400).json({
-      error: "Validation failed",
-      details: [{ msg: "Invalid email format", param: "email" }],
-    });
-  }
+
 
   next();
 }
@@ -44,5 +36,5 @@ function validateRequest(req, res, next) {
 module.exports = {
   registerValidation,
   validateRequest,
-  validateEmail,
+
 };
