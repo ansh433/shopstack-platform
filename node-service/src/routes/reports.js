@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { authenticate } = require("../middleware/auth");
-const { Order } = require("../models");
+const { Order, OrderItem } = require("../models");
 
 const router = express.Router();
 
@@ -16,6 +16,7 @@ router.get("/sales", authenticate, async (req, res) => {
       where: { status: "paid" },
       order: [["createdAt", "DESC"]],
       limit: 100,
+      include: [{ model: OrderItem }]
     });
 
     let template = fs.readFileSync(TEMPLATE_PATH, "utf-8");
