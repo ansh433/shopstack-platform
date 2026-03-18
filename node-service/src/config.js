@@ -17,5 +17,6 @@ module.exports = {
   server: {
     port: parseInt(process.env.PORT || "3000", 10),
     env: process.env.NODE_ENV || "development",
+    allowedOrigins: process.env.CORS_ALLOWED_ORIGINS ? process.env.CORS_ALLOWED_ORIGINS.split(',') : ["http://localhost:3000"],
   },
 };
