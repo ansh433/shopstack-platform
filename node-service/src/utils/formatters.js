@@ -32,10 +32,10 @@ function formatProductResponse(product) {
  * Build pagination metadata.
  */
 function paginate(page, limit) {
-  const parsedPage = parseInt(page, 10) || 1;
+  const parsedPage = Math.max(1, parseInt(page, 10) || 1);
   const parsedLimit = parseInt(limit, 10) || 10;
 
-  const offset = parsedPage * parsedLimit;
+  const offset = (parsedPage - 1) * parsedLimit;
 
   return {
     limit: parsedLimit,
