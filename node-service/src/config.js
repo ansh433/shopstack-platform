@@ -14,6 +14,9 @@ module.exports = {
     secret: process.env.JWT_SECRET || "dev-secret-key",
     expiresIn: "24h",
   },
+  cors: {
+    allowedOrigins: (process.env.CORS_ALLOWED_ORIGINS || "http://localhost:3000,http://localhost:8080").split(","),
+  },
   server: {
     port: parseInt(process.env.PORT || "3000", 10),
     env: process.env.NODE_ENV || "development",
