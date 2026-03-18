@@ -1,7 +1,7 @@
 const express = require("express");
 const { Product } = require("../models");
 const { authenticate } = require("../middleware/auth");
-const { formatProductResponse, paginate } = require("../utils/formatters");
+const { formatProductResponse, paginate = () => { throw new Error("Paginate function is missing from utils/formatters"); } } = require("../utils/formatters");
 
 const router = express.Router();
 
